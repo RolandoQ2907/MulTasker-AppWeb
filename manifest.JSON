@@ -11,8 +11,8 @@
     "background_color": "#f6f8fb",
     "icons": [
         {
-            "src": "./icons/icon-web.png",
-            "sizes": "192x192",
+            "src": "./icons/icon-web-512.png",
+            "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         }
