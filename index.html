@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MulTask</title>
+    <link rel="stylesheet" href="index-style.css">
+    <link rel="manifest" href="manifest.JSON">
+    <meta name="theme-color" content="#1b7bd8">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Sección Economía -->
+        <section class="economy-section">
+            <header class="economy-header">
+                <button class="economy-tab-btn is-active" data-view="list">Ver</button>
+                <button class="economy-tab-btn" data-view="form">Añadir</button>
+            </header>
+
+            <!-- Vista: lista de registros + rendimiento -->
+            <div class="economy-view economy-view--list is-visible">
+                <div class="economy-summary">
+                    <div class="economy-summary__header">
+                        <span class="economy-summary__title">Rendimiento económico</span>
+                        <div class="economy-summary__range">
+                            <button type="button" class="summary-range-btn is-active" data-range="today">Hoy</button>
+                            <button type="button" class="summary-range-btn" data-range="week">Semana</button>
+                            <button type="button" class="summary-range-btn" data-range="month">Mes</button>
+                            <button type="button" class="summary-range-btn" data-range="year">Año</button>
+                        </div>
+                    </div>
+
+                    <div class="economy-summary__body">
+                        <div class="economy-summary__value">
+                            <span class="summary-label">Balance</span>
+                            <span class="summary-amount" id="summaryBalance">$0</span>
+                        </div>
+
+                        <div class="economy-summary__chart" id="summaryChart">
+                            <div class="summary-bars">
+                                <div class="summary-bar">
+                                    <span class="summary-bar__label">Ingresos</span>
+                                    <div class="summary-bar__track">
+                                        <div class="summary-bar__fill" id="summaryBarIncome"></div>
+                                    </div>
+                                </div>
+                                <div class="summary-bar">
+                                    <span class="summary-bar__label">Gastos</span>
+                                    <div class="summary-bar__track">
+                                        <div class="summary-bar__fill summary-bar__fill--expense"
+                                            id="summaryBarExpense"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="economy-list"></ul>
+            </div>
+
+            <!-- Vista: formulario para añadir ingreso/gasto -->
+            <div class="economy-view economy-view--form">
+                <form class="economy-form">
+                    <div class="form-row">
+                        <label for="amount">Cantidad</label>
+                        <input type="number" id="amount" name="amount" placeholder="Ej: 5000">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="type">Tipo</label>
+                        <select id="type" name="type">
+                            <option value="income">Ingreso</option>
+                            <option value="expense">Gasto</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="category">Categoría</label>
+                        <select id="category" name="category">
+                            <option value="food">Comida</option>
+                            <option value="service">Servicio</option>
+                            <option value="transport">Transporte</option>
+                            <option value="other">Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" name="description" rows="2"
+                            placeholder="Describe el registro"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="details">Detalles (opcional)</label>
+                        <textarea id="details" name="details" rows="2"
+                            placeholder="Notas extra, comentarios, etc."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="color">Color del registro (opcional)</label>
+                        <input type="color" id="color" name="color" value="#f6f8fb">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="datetime">Fecha y hora (opcional)</label>
+                        <input type="datetime-local" id="datetime" name="datetime">
+                    </div>
+
+                    <button type="submit" class="economy-submit">Guardar registro</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="calendar-section">
+            <header class="calendar-header">
+                <h2 class="calendar-title">Calendario</h2>
+                <div class="calendar-controls">
+                    <button type="button" class="calendar-nav-btn" data-action="prev">◀</button>
+                    <span class="calendar-current-month" id="calendarCurrentMonth">Julio 2026</span>
+                    <button type="button" class="calendar-nav-btn" data-action="next">▶</button>
+                </div>
+            </header>
+
+            <div class="calendar-layout">
+                <div class="calendar-view">
+                    <div class="calendar-weekdays">
+                        <span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarGrid"></div>
+
+                    <div class="sec-events" id="secEvents">
+                        <p class="sec-events__empty">Selecciona un día para ver sus eventos.</p>
+                    </div>
+                </div>
+
+                <!-- Panel / formulario de evento -->
+                <aside class="calendar-event-panel">
+                    <h3 class="calendar-event-title">Nuevo evento</h3>
+                    <form class="calendar-event-form" id="calendarEventForm">
+                        <div class="form-row">
+                            <label for="eventTitle">Título</label>
+                            <input type="text" id="eventTitle" name="title" placeholder="Ej: Cumpleaños, reunión, etc.">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="eventDate">Fecha</label>
+                            <input type="date" id="eventDate" name="date">
+                        </div>
+
+                        <div class="form-row">
+                            <label>
+                                <input type="checkbox" id="eventAllDay" name="allDay">
+                                Evento de todo el día
+                            </label>
+                        </div>
+
+                        <div class="form-row form-row--time-range">
+                            <div>
+                                <label for="eventStartTime">Desde</label>
+                                <input type="time" id="eventStartTime" name="startTime">
+                            </div>
+                            <div>
+                                <label for="eventEndTime">Hasta</label>
+                                <input type="time" id="eventEndTime" name="endTime">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="eventRepeat">Repetir</label>
+                            <select id="eventRepeat" name="repeat">
+                                <option value="none">No repetir</option>
+                                <option value="daily">Diario</option>
+                                <option value="weekly">Semanal</option>
+                                <option value="monthly">Mensual</option>
+                                <option value="yearly">Anual (cumpleaños)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="eventDescription">Descripción</label>
+                            <textarea id="eventDescription" name="description" rows="2"
+                                placeholder="Notas, detalles, etc."></textarea>
+                        </div>
+
+                        <button type="submit" class="calendar-submit">Guardar evento</button>
+                    </form>
+                </aside>
+            </div>
+        </section>
+
+        <section class="cutclips-section" style="display: none;">
+            <div class="cutclips-shell">
+                <div class="cutclips-card">
+                    <form id="cutForm" class="cutclips-form">
+                        <p class="cutclips-title">Recortador de MP3</p>
+
+                        <!-- Archivo de audio local -->
+                        <div class="form-row">
+                            <label for="audioFile">Archivo de audio</label>
+                            <input type="file" id="audioFile" name="audioFile" accept="audio/*" required>
+                        </div>
+
+                        <!-- Rango de recorte -->
+                        <div class="form-row form-row--time-range" id="cut-time-row">
+                            <div>
+                                <label for="clipStart">Desde</label>
+                                <input type="time" id="clipStart" name="clip_start" step="1" required>
+                            </div>
+                            <div>
+                                <label for="clipEnd">Hasta</label>
+                                <input type="time" id="clipEnd" name="clip_end" step="1" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="cutclips-submit">
+                            Recortar y descargar
+                        </button>
+
+                        <div class="cutclips-result" id="cutResult"></div>
+                    </form>
+                    <div class="cutclips-status">
+                        <p id="clipInfo"></p>
+                        <p id="totalEta"></p>
+
+                        <div class="cutclips-progress-group">
+                            <span>Recorte</span>
+                            <div class="cutclips-progress">
+                                <div id="cutProgressBar" class="cutclips-progress__bar"></div>
+                            </div>
+                            <span id="cutProgressPct" class="cutclips-progress__pct">0%</span>
+                        </div>
+
+                        <div class="cutclips-progress-group">
+                            <span>Conversión</span>
+                            <div class="cutclips-progress">
+                                <div id="convProgressBar" class="cutclips-progress__bar"></div>
+                            </div>
+                            <span id="convProgressPct" class="cutclips-progress__pct">0%</span>
+                        </div>
+                    </div>
+
+                    <button id="downloadClipBtn" class="cutclips-download-btn" disabled style="display:none;">
+                        Descargar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom navigation único -->
+        <nav class="bottom-nav">
+            <button class="bottom-nav__item is-active" data-tab="economy">
+                <span class="bottom-nav__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 18h3V8H4v10zm5 0h3V4H9v14zm5 0h3V11h-3v7zm5 0h3V6h-3v12z"></path>
+                    </svg>
+                </span>
+                <span class="bottom-nav__label">Economía</span>
+            </button>
+
+            <button class="bottom-nav__item" data-tab="calendar">
+                <span class="bottom-nav__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M7 4v2H5v2h14V6h-2V4h-2v2H9V4H7zm-2 6v8h14v-8H5zm2 2h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="bottom-nav__label">Calendario</span>
+            </button>
+
+            <button class="bottom-nav__item" data-tab="cutclips">
+                <span class="bottom-nav__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M11 4h2v8l3-3 1.4 1.4L12 15.8 6.6 10.4 8 9l3 3V4zm-6 12v2h14v-2H5z"></path>
+                    </svg>
+                </span>
+                <span class="bottom-nav__label">CutClips</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <script src="./functions/localStorage/storage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.0/lame.min.js"></script>
+    <script src="./functions/economy.js"></script>
+    <script src="./functions/calendar.js"></script>
+    <script src="./functions/cutclips.js"></script>
+
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+    </script>
+</body>1
+
+</html>
