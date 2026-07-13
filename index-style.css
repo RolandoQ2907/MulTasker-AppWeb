@@ -663,9 +663,7 @@ body {
     font-weight: 500;
 }
 
-/* =========================================
-   BOTONES DE NAVEGACION
-   ========================================= */
+/* =========================================BOTONES DE NAVEGACION========================================= */
 .bottom-nav {
     position: absolute;
     left: 0;
@@ -720,7 +718,7 @@ body {
 }
 
 .bottom-nav__item:is(:hover, :focus-visible) {
-    color: #126b71;
-    background-color: rgba(8, 217, 228, 0.5);
+    color: #ffffff;
+    background-color: rgba(38, 46, 122, 0.5);
     border-radius: 20px;
 }
