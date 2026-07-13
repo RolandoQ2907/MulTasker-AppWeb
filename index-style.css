@@ -2,7 +2,6 @@
     font-family: 'Google Flex';
     src: url('font/Google_Sans_Flex/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf') format('truetype');
 }
-
 *{
     font-family: 'Google Flex';
 }
@@ -14,7 +13,6 @@ body {
     height: 100%;
     overflow: hidden;
 }
-
 #app {
     display: flex;
     flex-direction: column;
