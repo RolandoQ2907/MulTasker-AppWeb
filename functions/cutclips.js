@@ -13,17 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const cutSubmitBtn = cutForm ? cutForm.querySelector('button[type="submit"]') : null;
 
     // Elementos de estado / progreso
-    const clipInfo = document.getElementById('clipInfo');         // "Clip de 23 s"
-    const totalEta = document.getElementById('totalEta');         // "Tiempo aprox: 3 s"
-    const cutProgressBar = document.getElementById('cutProgressBar');   // barra recorte
-    const cutProgressPct = document.getElementById('cutProgressPct');   // porcentaje recorte
-    const convProgressBar = document.getElementById('convProgressBar');  // barra conversión
-    const convProgressPct = document.getElementById('convProgressPct');  // porcentaje conversión
+    const clipInfo = document.getElementById('clipInfo');
+    const totalEta = document.getElementById('totalEta');
+    const cutProgressBar = document.getElementById('cutProgressBar');
+    const cutProgressPct = document.getElementById('cutProgressPct');
+    const convProgressBar = document.getElementById('convProgressBar');
+    const convProgressPct = document.getElementById('convProgressPct');
 
     // Botón de descarga y URL del último clip
     const downloadClipBtn = document.getElementById('downloadClipBtn');
     let clipCounter = 1;
     let lastClipUrl = null;
+    
+    // Corregido: Variables declaradas correctamente
+    let currentBaseName = 'clip';
+    let currentExt = 'mp3';
 
     function showSection(tab) {
         if (economySection) economySection.style.display = tab === 'economy' ? 'flex' : 'none';
@@ -43,21 +47,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mostrar por defecto la sección de economía
     showSection('economy');
 
-    // Helper: HH:MM:SS → segundos
+    // Corregido: Función timeToSeconds limpia y sin duplicados anidados
     function timeToSeconds(timeValue) {
         if (!timeValue) return 0;
         const parts = timeValue.split(':').map(Number);
-
+        
         if (parts.length === 3) {
             const [hh, mm, ss] = parts;
             return hh * 3600 + mm * 60 + ss;
         }
-
         if (parts.length === 2) {
-            const [hh, mm] = parts;
-            return hh * 3600 + mm * 60;
+            const [mm, ss] = parts;
+            return mm * 60 + ss;
         }
-
+        
         return Number(timeValue) || 0;
     }
 
@@ -355,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const samples = new Int16Array(wavArrayBuffer, dataOffset, dataLen / 2);
 
         const kbps = 128; // bitrate MP3
-        const mp3Encoder = new lamejs.Mp3Encoder(channels, sampleRate, kbps); // [web:252]
+        const mp3Encoder = new lamejs.Mp3Encoder(channels, sampleRate, kbps);
 
         const sampleBlockSize = 1152;
         const mp3Data = [];

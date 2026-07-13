@@ -1,9 +1,11 @@
 @font-face {
     font-family: 'Google Flex';
-    src: url('font/Google_Sans_Flex/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf') format('truetype');
+    /* Se han reemplazado las comas por %2C para que la URL sea válida */
+    src: url('font/Google_Sans_Flex/GoogleSansFlex-VariableFont_GRAD%2CROND%2Copsz%2Cslnt%2Cwdth%2Cwght.ttf') format('truetype');
 }
-*{
-    font-family: 'Google Flex';
+
+* {
+    font-family: 'Google Flex', sans-serif;
 }
 
 html,
@@ -13,6 +15,7 @@ body {
     height: 100%;
     overflow: hidden;
 }
+
 #app {
     display: flex;
     flex-direction: column;
@@ -25,6 +28,7 @@ body {
     overflow: hidden;
 }
 
+/* =========================================ECONOMY SECTION========================================= */
 .economy-section {
     display: flex;
     flex-direction: column;
@@ -38,7 +42,7 @@ body {
     padding: 8px 10px;
     border-radius: 8px;
     border: 1px solid #e0e3eb;
-    background: #f6f8fb;
+    background: white;
 }
 
 .economy-summary__header {
@@ -50,7 +54,7 @@ body {
 }
 
 .economy-summary__title {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     color: #333842;
 }
@@ -131,7 +135,6 @@ body {
 
 .summary-bar__fill {
     width: 0%;
-    /* se actualiza desde JS */
     height: 100%;
     background: #1b7bd8;
     transition: width 0.25s ease-out;
@@ -141,91 +144,9 @@ body {
     background: #d62c2c;
 }
 
-.economy-summary {
-    margin-bottom: 12px;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid #e0e3eb;
-    background: white;
-}
-
-.economy-summary__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
-}
-
-.economy-summary__title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333842;
-}
-
-.economy-summary__range {
-    display: flex;
-    gap: 4px;
-}
-
-.summary-range-btn {
-    padding: 4px 6px;
-    border-radius: 999px;
-    border: 1px solid #d0d4dd;
-    background: #ffffff;
-    font-size: 10px;
-    cursor: pointer;
-    color: #555b66;
-}
-
-.summary-range-btn.is-active {
-    background: #1b7bd8;
-    color: #ffffff;
-    border-color: #1b7bd8;
-}
-
-.economy-summary__body {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.economy-summary__value {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-}
-
-.summary-label {
-    font-size: 11px;
-    color: #555b66;
-}
-
-.summary-amount {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1b7bd8;
-}
-
 /* Gráfica sencilla */
 .economy-summary__chart {
     margin-top: 4px;
-}
-
-.summary-bar {
-    width: 100%;
-    height: 6px;
-    border-radius: 999px;
-    background: #dde3f0;
-    overflow: hidden;
-}
-
-.summary-bar__fill {
-    width: 50%;
-    /* se actualizará desde JS */
-    height: 100%;
-    background: #1b7bd8;
-    transition: width 0.25s ease-out;
 }
 
 /* Header con botones Ver / Añadir */
@@ -328,7 +249,7 @@ body {
     content: " • ";
 }
 
-/* Formulario */
+/* Formulario Economía */
 .economy-form {
     display: flex;
     flex-direction: column;
@@ -339,7 +260,7 @@ body {
 .form-row {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
     max-width: 100%;
     min-width: 100%;
 }
@@ -376,10 +297,9 @@ body {
     cursor: pointer;
 }
 
-/*Google Calendar Section*/
+/* =========================================GOOGLE CALENDAR SECTION========================================= */
 .calendar-section {
     display: none;
-    /* luego lo mostraremos cuando el tab 'Calendario' esté activo */
     flex-direction: column;
     padding: 12px 12px 64px;
     height: 100%;
@@ -468,13 +388,15 @@ body {
     font-size: 11px;
     line-height: 1;
 }
-.sec-event-card__top{
+
+.sec-event-card__top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
 }
-.sec-event-card__delete{
+
+.sec-event-card__delete {
     background-color: #e61247;
     color: #ffeaf1;
     cursor: pointer;
@@ -491,7 +413,7 @@ body {
 .sec-events {
     min-height: 120px;
     height: 45%;
-    max-height: 65%;
+    max-height: 200px;
     overflow-y: auto;
     border: 1px solid #e0e3eb;
     border-radius: 10px;
@@ -591,7 +513,7 @@ body {
     cursor: pointer;
 }
 
-/* Sección principal: ocupa toda la pantalla y centra el card */
+/* ==========CUTCLIPS SECTION========== */
 .cutclips-section {
     display: flex;
     flex-direction: column;
@@ -602,13 +524,11 @@ body {
     overflow-y: auto;
 }
 
-/* Wrapper para limitar ancho general */
 .cutclips-shell {
     width: 100%;
     max-width: 720px;
 }
 
-/* Card que puede hacer scroll interno */
 .cutclips-card {
     background: #f6f8fb;
     border-radius: 12px;
@@ -621,14 +541,12 @@ body {
     top: 0;
 }
 
-/* Formulario en columna */
 .cutclips-form {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-/* Título */
 .cutclips-title {
     font-size: 15px;
     font-weight: 600;
@@ -636,26 +554,20 @@ body {
     text-align: center;
 }
 
-/* Filas genéricas del formulario (compartidas) */
-.form-row {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.cutclips-form .form-row {
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
-/* fila de tiempos lado a lado */
 #cut-time-row {
     flex-direction: row;
     gap: 8px;
 }
 
-#cut-time-row>div {
+#cut-time-row > div {
     flex: 1;
 }
 
-/* Inputs y labels */
 .cutclips-form label {
     font-size: 14px;
     font-weight: 500;
@@ -669,20 +581,18 @@ body {
     font-size: 14px;
 }
 
-.message-time{
+.message-time {
     text-align: center;
     font-size: 13px;
 }
 
-
-.input-time-div{
+.input-time-div {
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 50%;
 }
 
-/* Botón */
 .cutclips-submit {
     margin-top: 10px;
     background: #1b7bd8;
@@ -695,12 +605,10 @@ body {
     font-weight: 500;
 }
 
-/* Opcional: hover del botón */
 .cutclips-submit:hover {
     background: #186bbf;
 }
 
-/* Resultado de descarga */
 .cutclips-result {
     margin-top: 10px;
     font-size: 14px;
@@ -745,7 +653,7 @@ body {
 
 .cutclips-download-btn {
     margin-top: 10px;
-    background: rgba(27, 121, 216);
+    background: rgba(27, 121, 216, 1);
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -755,7 +663,9 @@ body {
     font-weight: 500;
 }
 
-/*Botones de Navegacion*/
+/* =========================================
+   BOTONES DE NAVEGACION
+   ========================================= */
 .bottom-nav {
     position: absolute;
     left: 0;
@@ -766,7 +676,7 @@ body {
     justify-content: space-between;
     padding: 8px 12px;
     background: linear-gradient(to top, #a8bedf, #c7ddfd);
-    border-top: 5px solid rgba(36, 45, 60, 0.6);
+    border-top: 3px solid #555a63;
     gap: 10px;
 }
 
@@ -787,7 +697,7 @@ body {
     font-size: 11px;
 }   
 
-.bottom-nav__item:hover{
+.bottom-nav__item:hover {
     box-shadow: 0 0px 2px rgba(0, 30, 107, 0.3);
     transform: translateY(2px);
 }
@@ -810,7 +720,7 @@ body {
 }
 
 .bottom-nav__item:is(:hover, :focus-visible) {
-    color: #ecfeff;
-    background-color: rgb(57, 110, 156);
+    color: #126b71;
+    background-color: rgba(8, 217, 228, 0.5);
     border-radius: 20px;
 }

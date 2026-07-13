@@ -196,7 +196,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Eliminado: Bloque de función renderSelectedDayEvents roto y duplicado que causaba error de referencia (ev/dateStr)
+
+    // Eliminada: Primera definición de renderCalendar (estaba duplicada y sin la lógica del día actual)
+
     function renderSelectedDayEvents(date) {
+        const secEvents = document.getElementById('secEvents');
         if (!secEvents) return;
 
         const events = calendarEvents.filter(ev => eventOccursOnDate(ev, date));
@@ -232,73 +237,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${ev.description ? `<div class="sec-event-card__desc">${ev.description}</div>` : ''}
                 <button type="button" class="sec-event-card__delete" data-id="${ev.id}">⨯</button>
             `;
+            // Eliminada: Segunda asignación de card.innerHTML que sobreescribía la anterior y borraba el botón
 
             secEvents.appendChild(card);
         });
     }
 
     function renderCalendar() {
-    if (!calendarGrid || !calendarCurrentMonthEl) return;
+        if (!calendarGrid || !calendarCurrentMonthEl) return;
 
-    const year = calendarDate.getFullYear();
-    const month = calendarDate.getMonth();
-    const { daysInMonth, firstWeekday } = getMonthInfo(year, month);
+        const year = calendarDate.getFullYear();
+        const month = calendarDate.getMonth();
+        const { daysInMonth, firstWeekday } = getMonthInfo(year, month);
 
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
 
-    calendarCurrentMonthEl.textContent = `${MONTH_NAMES_ES[month]} ${year}`;
-    calendarGrid.innerHTML = '';
+        calendarCurrentMonthEl.textContent = `${MONTH_NAMES_ES[month]} ${year}`;
+        calendarGrid.innerHTML = '';
 
-    for (let i = 0; i < firstWeekday; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'calendar-day calendar-day--empty';
-        calendarGrid.appendChild(emptyCell);
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-        const cellDate = new Date(year, month, day);
-        const dayStr = cellDate.toISOString().split('T')[0];
-        const dayEl = document.createElement('div');
-        dayEl.className = 'calendar-day';
-        dayEl.dataset.date = dayStr;
-
-        const dayEvents = calendarEvents.filter(ev => eventOccursOnDate(ev, dayStr));
-
-        if (dayStr === todayStr) {
-            dayEl.classList.add('calendar-day--today');
+        for (let i = 0; i < firstWeekday; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'calendar-day calendar-day--empty';
+            calendarGrid.appendChild(emptyCell);
         }
 
-        if (dayEvents.length) {
-            dayEl.classList.add('has-events');
+        for (let day = 1; day <= daysInMonth; day++) {
+            const cellDate = new Date(year, month, day);
+            const dayStr = cellDate.toISOString().split('T')[0];
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            dayEl.dataset.date = dayStr;
+
+            const dayEvents = calendarEvents.filter(ev => eventOccursOnDate(ev, dayStr));
+
+            if (dayStr === todayStr) {
+                dayEl.classList.add('calendar-day--today');
+            }
+
+            if (dayEvents.length) {
+                dayEl.classList.add('has-events');
+            }
+
+            const dateLabel = document.createElement('div');
+            dateLabel.className = 'calendar-day__date';
+            dateLabel.textContent = day;
+
+            const eventsContainer = document.createElement('div');
+            eventsContainer.className = 'calendar-day__events';
+
+            dayEvents.forEach(ev => {
+                const pill = document.createElement('div');
+                pill.className = 'calendar-day__event-pill';
+                pill.textContent = ev.title;
+                eventsContainer.appendChild(pill);
+            });
+
+            dayEl.appendChild(dateLabel);
+            dayEl.appendChild(eventsContainer);
+
+            dayEl.addEventListener('click', () => {
+                selectedCalendarDate = dayStr;
+                if (eventDateInput) eventDateInput.value = selectedCalendarDate;
+                renderSelectedDayEvents(selectedCalendarDate);
+            });
+
+            calendarGrid.appendChild(dayEl);
         }
-
-        const dateLabel = document.createElement('div');
-        dateLabel.className = 'calendar-day__date';
-        dateLabel.textContent = day;
-
-        const eventsContainer = document.createElement('div');
-        eventsContainer.className = 'calendar-day__events';
-
-        dayEvents.forEach(ev => {
-            const pill = document.createElement('div');
-            pill.className = 'calendar-day__event-pill';
-            pill.textContent = ev.title;
-            eventsContainer.appendChild(pill);
-        });
-
-        dayEl.appendChild(dateLabel);
-        dayEl.appendChild(eventsContainer);
-
-        dayEl.addEventListener('click', () => {
-            selectedCalendarDate = dayStr;
-            if (eventDateInput) eventDateInput.value = selectedCalendarDate;
-            renderSelectedDayEvents(selectedCalendarDate);
-        });
-
-        calendarGrid.appendChild(dayEl);
     }
-}
 
     if (secEvents) {
         secEvents.addEventListener('click', (e) => {
@@ -352,6 +358,92 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (economyForm && economyList) {
+        economyForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const amountInput = economyForm.querySelector('#amount');
+            const typeSelect = economyForm.querySelector('#type');
+            const categorySelect = economyForm.querySelector('#category');
+            const descTextarea = economyForm.querySelector('#description');
+            const detailsTextarea = economyForm.querySelector('#details');
+            const colorInput = economyForm.querySelector('#color');
+            const datetimeInput = economyForm.querySelector('#datetime');
+
+            const amountValue = amountInput.value.trim();
+            const typeValue = typeSelect.value;
+            const categoryValue = categorySelect.value;
+            const descValue = descTextarea.value.trim();
+            const detailsValue = detailsTextarea.value.trim();
+            const colorValue = colorInput.value || '#fdfdfd';
+            const datetimeValue = datetimeInput.value;
+
+            if (!amountValue || !descValue) return;
+
+            const numericAmount = Number(amountValue);
+            const sign = typeValue === 'expense' ? '- ' : '+ ';
+            const formattedAmount = `${sign}$${numericAmount.toLocaleString('es-AR')}`;
+
+            const categoryMap = {
+                food: 'Comida',
+                service: 'Servicio',
+                transport: 'Transporte',
+                other: 'Otros'
+            };
+            const categoryText = categoryMap[categoryValue] || 'Otros';
+
+            let datetimeText = '';
+            if (datetimeValue) {
+                const d = new Date(datetimeValue);
+                const day = String(d.getDate()).padStart(2, '0');
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const year = d.getFullYear();
+                const hours = String(d.getHours()).padStart(2, '0');
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                datetimeText = `${day}/${month}/${year} ${hours}:${minutes}`;
+            }
+
+            let metaHtml = '';
+            if (detailsValue || datetimeText) {
+                metaHtml = `
+            <div class="economy-item__meta">
+                ${detailsValue ? `<span>${detailsValue}</span>` : ''}
+                ${datetimeText ? `<span>${datetimeText}</span>` : ''}
+            </div>
+        `;
+            }
+
+            const li = document.createElement('li');
+            li.className = 'economy-item';
+            li.dataset.id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random();
+            li.innerHTML = `
+        <div class="economy-item__main">
+            <span class="economy-item__amount">${formattedAmount}</span>
+            <span class="economy-item__category">${categoryText}</span>
+            <button class="economy-item__delete" type="button">X</button>
+        </div>
+        <p class="economy-item__desc">${descValue}</p>
+        ${metaHtml}
+        `;
+
+            li.style.background = colorValue;
+            li.style.color = getContrastTextColor(colorValue);
+            economyList.appendChild(li);
+
+            amountInput.value = '';
+            typeSelect.value = 'income';
+            categorySelect.value = 'food';
+            descTextarea.value = '';
+            detailsTextarea.value = '';
+            colorInput.value = '#f6f8fb';
+            datetimeInput.value = '';
+
+            setEconomyView('list');
+            document.querySelector('.economy-tab-btn[data-view="list"]')?.classList.add('is-active');
+            updateSummary(currentRange);
+        });
+    }
+
     if (calendarNavButtons.length) {
         calendarNavButtons.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -377,6 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const startTime = document.getElementById('eventStartTime')?.value;
             const endTime = document.getElementById('eventEndTime')?.value;
             const repeat = document.getElementById('eventRepeat')?.value || 'none';
+
             const repeatDays = Number(document.getElementById('eventRepeatDays')?.value || 0);
             const description = document.getElementById('eventDescription')?.value.trim() || '';
 
@@ -408,15 +501,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedCalendarDate) {
                 renderSelectedDayEvents(selectedCalendarDate);
             }
-
-            showSection('calendar');
-            bottomNavItems.forEach(b => b.classList.remove('is-active'));
-            document.querySelector('.bottom-nav__item[data-tab="calendar"]')?.classList.add('is-active');
         });
+        // Eliminadas: Línea "description" suelta y bloque de reseteo suelto que rompían la sintaxis y el estado inicial
     }
 
     showSection('economy');
     updateSummary(currentRange);
     setEconomyView('list');
     renderCalendar();
-});
+}); 
