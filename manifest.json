@@ -1,0 +1,31 @@
+{
+    "name": "Economy · Calendar · CutClips",
+    "short_name": "MulTask App",
+    "description": "App web para registrar gastos, organizar eventos y recortar audios",
+    "lang": "es-AR",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#1b7bd8",
+    "background_color": "#f6f8fb",
+    "icons": [
+        {
+            "src": "./icons/icon-web.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "./icons/icon-web-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "productivity",
+        "finance",
+        "audio"
+    ]
+}
