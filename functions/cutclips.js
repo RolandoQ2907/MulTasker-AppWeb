@@ -50,18 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Corregido: Función timeToSeconds limpia y sin duplicados anidados
     function timeToSeconds(timeValue) {
         if (!timeValue) return 0;
-        const parts = timeValue.split(':').map(Number);
-        
-        if (parts.length === 3) {
-            const [hh, mm, ss] = parts;
-            return hh * 3600 + mm * 60 + ss;
-        }
-        if (parts.length === 2) {
-            const [mm, ss] = parts;
-            return mm * 60 + ss;
-        }
-        
-        return Number(timeValue) || 0;
+        const [hh, mm, ss] = timeValue.split(':').map(Number);
+        return (hh * 3600) + (mm * 60) + ss;
     }
 
     // Helpers de progreso
@@ -97,8 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const startValue = clipStart?.value || '';
             const endValue = clipEnd?.value || '';
 
+            // Si los campos requeridos por alguna razón no tienen valor nativo
             if (!startValue || !endValue) {
-                alert('Completa los campos Desde y Hasta.');
+                alert('Por favor, ingresa los tiempos de inicio y fin.');
                 return;
             }
 

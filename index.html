@@ -203,20 +203,20 @@
                         <div class="form-row form-row--time-range" id="cut-time-row">
                             <div class="input-time-div">
                                 <label for="clipStart">Desde</label>
-                                <input id="clipStart" type="text" inputmode="numeric" placeholder="HH:MM:SS" pattern="^[0-9]{2}:[0-9]{2}:[0-9]{2}$">
+                                <input id="clipStart" type="time" step="1" required>
                             </div>
                             <div class="input-time-div">
                                 <label for="clipEnd">Hasta</label>
-                                <input id="clipEnd" type="text" inputmode="numeric" placeholder="HH:MM:SS" pattern="^[0-9]{2}:[0-9]{2}:[0-9]{2}$">
+                                <input id="clipEnd" type="time" step="1" required>
                             </div>
                         </div>
 
                         <div class="message-time">
                             <p>
-                                Escriba los tiempos con el formato HH:MM:SS, incluyendo los dos puntos.
+                                Al ingresar los tiempos de recorte, en HH las 12 = 00, las 12 representa 00 horas.<br>Despues ingrese el formato en AM, en el inicio y final del recorte.
                             </p>
                             <p>
-                                Ejemplo: 00:03:30 – 00:05:25
+                                Ejemplo: 00:03:30 = 12:03:30 AM
                             </p>
                         </div>
 
